@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import './App.css';
 
 
-var list1 = ["nojan"]
+var list1 = []
 class NameForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {name: '', description: '', price: '', contactlist: []};
+    this.state = {name: '', description: '', price: '', contactlist: list1};
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handlePriceChange = this.handlePriceChange.bind(this);
@@ -26,8 +26,9 @@ class NameForm extends React.Component {
   handleSubmit(event) {
     this.setState({
       ...this.state,
-      contactlist: this.state.name
+      contactlist: list1.push(<p> Name: {this.state.name} Description: {this.state.description} Price: {this.state.price} </p>)
     })
+  
     event.preventDefault();
   }
 
@@ -36,7 +37,10 @@ class NameForm extends React.Component {
     return (
       <div>
       <form onSubmit={this.handleSubmit}>
-        <label>
+        <div className= "header">
+        Contact Creator
+        </div>
+        <label className = "info">
           Name:
           <input type="text" value={this.state.name} onChange={this.handleNameChange} />
           Description:
@@ -46,7 +50,7 @@ class NameForm extends React.Component {
         </label>
         <input type="submit" value="Submit" />
       </form>
-      {this.state.contactlist}
+      {list1}
       </div>
     
     );
