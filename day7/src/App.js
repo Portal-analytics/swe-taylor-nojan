@@ -11,13 +11,12 @@ var config = {
   };
 
 firebase.initializeApp(config);
-
-
+var readData = firebase.database().ref('users/');
 var index = 0;
 class NameForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {temp_name: '', temp_description: '', temp_price: '', name: '', description: '', price: '', contracts:[]};
+    this.state = {temp_name: '', temp_description: '', temp_price: '', name: '', description: '', price: '', contracts:[],};
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handlePriceChange = this.handlePriceChange.bind(this);
@@ -27,6 +26,7 @@ class NameForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
   }
+
 
   handleNameChange(event) {
     this.setState({...this.state, name: event.target.value});
@@ -51,12 +51,13 @@ class NameForm extends React.Component {
     var array1=this.state.contracts,
     updatedContracts = array1.concat([{index: index, name: this.state.name, description: this.state.description, price: this.state.price }]);
     index++;
-    this.writeUserData(this.state.name,this.state.description,this.state.price, index - 1)
+    /*
     this.setState({
       ...this.state,
       contracts: updatedContracts
     })
-  
+    */
+  this.writeUserData(updatedContracts)
     event.preventDefault();
   }
   handleEditSubmit(contract) {
@@ -65,20 +66,19 @@ class NameForm extends React.Component {
     updatedContracts[contract.index].name = this.state.temp_name + " "
     updatedContracts[contract.index].description = this.state.temp_description + " "
     updatedContracts[contract.index].price = this.state.temp_price + " "
-    this.writeUserData(updatedContracts[contract.index].name,updatedContracts[contract.index].description,updatedContracts[contract.index].price,contract.index)
+    /*
     this.setState({
       ...this.state,
       contracts: updatedContracts
     })
+    */
+    this.writeUserData(updatedContracts)
+    
   }
 
-writeUserData(contractname, contractdescription, contractprice, contractindex) {
-  firebase.database().ref('users/' + contractindex).set({
-    name: contractname,
-    price: contractdescription,
-    description: contractprice,
-    
-
+writeUserData(contracts) {
+  firebase.database().ref('users/').set({
+   contracts
   });
 }
  
@@ -86,15 +86,32 @@ writeUserData(contractname, contractdescription, contractprice, contractindex) {
   handleEdit(contract) {
      const updatedContracts = this.state.contracts.slice(0);
      updatedContracts[contract.index].editing = true;
+      this.writeUserData(updatedContracts)
+      /*
      this.setState({
       ...this.state,
       contracts: updatedContracts
+      
     })
-
+*/
   
     }
 
-    
+componentWillMount(){
+    var readData = firebase.database().ref('users/');
+      readData.on('value',(snapshot) => {
+        if (snapshot.val() === null) {
+        this.setState({
+          ...this.state,
+          contracts: [],
+        })}
+        else {
+        this.setState({
+          ...this.state,
+          contracts: snapshot.val().contracts,
+        })}
+      })
+    } 
   
 
   render() {
