@@ -2,7 +2,8 @@ import React from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import { NativeRouter, Route, Link } from "react-router-native";
 import TextBox from "./App.js";
-
+import { firebaseData } from "./firebase-config";
+import * as firebase from "firebase";
 const styles = StyleSheet.create({
   button: {
     position: "absolute",
@@ -43,8 +44,7 @@ export default class Home extends React.Component {
     user: "Nojan",
     quotes: [],
     input: "",
-    currentTime: null,
-    temporary_time: new Date().toTimeString().slice(0, 5)
+    quotes_kavya: []
   };
 
   updateText = text => {
@@ -56,13 +56,41 @@ export default class Home extends React.Component {
 
   addText = () => {
     newQuotes = this.state.quotes;
-    newQuotes.push(this.state.inputQuote);
+    newQuotes.push({
+      quote: this.state.inputQuote,
+      date: new Date().toTimeString().slice(0, 5)
+    });
     this.refs.newQuotes.value = "";
-    this.setState({
-      ...this.state,
-      quotes: newQuotes,
-      inputQuote: "",
-      currentTime: this.state.temporary_time
+    firebase.database().ref("/nojan-taylor").set({
+      quotes: newQuotes
+    });
+    var readData = firebase.database().ref("/nojan-taylor");
+    readData.on("value", snapshot => {
+      if (snapshot.val() === null) {
+        this.setState({
+          ...this.state,
+          quotes_kavya: []
+        });
+      } else {
+        this.setState({
+          ...this.state,
+          quotes_kavya: snapshot.val().quotes
+        });
+      }
+    });
+    var readData = firebase.database().ref("/kavya-annie");
+    readData.on("value", snapshot => {
+      if (snapshot.val() === null) {
+        this.setState({
+          ...this.state,
+          quotes: []
+        });
+      } else {
+        this.setState({
+          ...this.state,
+          quotes: snapshot.val().quotes
+        });
+      }
     });
   };
   render() {
@@ -78,13 +106,26 @@ export default class Home extends React.Component {
           returnKeyType="send"
           value={this.state.inputQuote}
         />
-        {this.state.quotes.map(quote => {
+        {this.state.quotes.map(info => {
           return (
             <View>
-              <Text style={styles.welcome}>Message: {quote}</Text>
+              <Text style={styles.welcome}>Message: {info.quote}</Text>
               <Text>User: {this.state.user}</Text>
               <Text>
-                Time: {this.state.currentTime}
+                Time: {info.date}
+                {"\n"}
+              </Text>
+
+            </View>
+          );
+        })}
+        {this.state.quotes_kavya.map(info => {
+          return (
+            <View>
+              <Text style={styles.welcome}>Message: {info.quote}</Text>
+              <Text>User: {this.state.user}</Text>
+              <Text>
+                Time: {info.date}
                 {"\n"}
               </Text>
 
