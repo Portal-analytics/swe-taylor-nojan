@@ -1,6 +1,5 @@
 import React from "react";
 import SideMenu from "react-native-side-menu";
-// import Menu from "./Menu";
 import {
   StyleSheet,
   Text,

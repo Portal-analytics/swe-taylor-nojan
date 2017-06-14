@@ -20,9 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5FCFF"
   },
   welcome: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10
+    fontSize: 25
   },
   instructions: {
     textAlign: "center",
@@ -45,7 +43,8 @@ export default class Home extends React.Component {
     user: "Nojan",
     quotes: [],
     input: "",
-    curTime: null
+    currentTime: null,
+    temporary_time: new Date().toTimeString().slice(0, 5)
   };
 
   updateText = text => {
@@ -59,12 +58,11 @@ export default class Home extends React.Component {
     newQuotes = this.state.quotes;
     newQuotes.push(this.state.inputQuote);
     this.refs.newQuotes.value = "";
-    var temporary_time = new Date().toTimeString().slice(0, 5);
     this.setState({
       ...this.state,
       quotes: newQuotes,
       inputQuote: "",
-      currentTime: temporary_time
+      currentTime: this.state.temporary_time
     });
   };
   render() {
@@ -83,8 +81,8 @@ export default class Home extends React.Component {
         {this.state.quotes.map(quote => {
           return (
             <View>
+              <Text style={styles.welcome}>Message: {quote}</Text>
               <Text>User: {this.state.user}</Text>
-              <Text>Message: {quote}</Text>
               <Text>
                 Time: {this.state.currentTime}
                 {"\n"}
