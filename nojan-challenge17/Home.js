@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
 });
 export default class Home extends React.Component {
   state = {
-    user: "Nojan",
     quotes: [],
     input: "",
     quotes_kavya: []
@@ -58,7 +57,8 @@ export default class Home extends React.Component {
     newQuotes = this.state.quotes;
     newQuotes.push({
       quote: this.state.inputQuote,
-      date: new Date().toTimeString().slice(0, 5)
+      date: new Date().toTimeString().slice(0, 5),
+      name: "Taylor and Nojan"
     });
     this.refs.newQuotes.value = "";
     firebase.database().ref("/nojan-taylor").set({
@@ -112,7 +112,7 @@ export default class Home extends React.Component {
           return (
             <View>
               <Text style={styles.welcome}>Message: {info.quote}</Text>
-              <Text>User: {this.state.user}</Text>
+              <Text>User: {info.name}</Text>
               <Text>
                 Time: {info.date}
                 {"\n"}
@@ -125,7 +125,7 @@ export default class Home extends React.Component {
           return (
             <View>
               <Text style={styles.welcome}>Message: {info.quote}</Text>
-              <Text>User: {this.state.user}</Text>
+              <Text>User: {info.name}</Text>
               <Text>
                 Time: {info.date}
                 {"\n"}
