@@ -69,20 +69,6 @@ export default class Home extends React.Component {
       if (snapshot.val() === null) {
         this.setState({
           ...this.state,
-          quotes_kavya: []
-        });
-      } else {
-        this.setState({
-          ...this.state,
-          quotes_kavya: snapshot.val().quotes
-        });
-      }
-    });
-    var readData = firebase.database().ref("/kavya-annie");
-    readData.on("value", snapshot => {
-      if (snapshot.val() === null) {
-        this.setState({
-          ...this.state,
           quotes: []
         });
       } else {
@@ -92,7 +78,23 @@ export default class Home extends React.Component {
         });
       }
     });
+
+    var pairReadData = firebase.database().ref("/kavya-annie");
+    pairReadData.on("value", snapshot => {
+      if (snapshot.val() === null) {
+        this.setState({
+          ...this.state,
+          quotes_kavya: []
+        });
+      } else {
+        this.setState({
+          ...this.state,
+          quotes_kavya: snapshot.val().quotes
+        });
+      }
+    });
   };
+
   render() {
     return (
       <View style={styles.container}>
