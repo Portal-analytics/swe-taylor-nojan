@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: "row",
     justifyContent: "space-around",
-    backgroundColor: "green"
+    backgroundColor: "#ADD8E6"
   },
   navItem: {
     flex: 1,

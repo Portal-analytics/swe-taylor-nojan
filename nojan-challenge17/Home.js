@@ -29,10 +29,14 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   input: {
-    margin: 15,
+    margin: 20,
     height: 40,
     borderColor: "#7a42f4",
-    borderWidth: 1
+    borderWidth: 1,
+    position: "absolute",
+    left: 10,
+    right: 10,
+    bottom: 20
   },
   output: {
     fontSize: 50,
@@ -58,7 +62,7 @@ export default class Home extends React.Component {
     newQuotes.push({
       quote: this.state.inputQuote,
       date: new Date().toTimeString().slice(0, 5),
-      name: "Taylor and Nojan"
+      name: "Kavya and Annie"
     });
     this.refs.newQuotes.value = "";
     firebase.database().ref("/nojan-taylor").set({
@@ -111,11 +115,11 @@ export default class Home extends React.Component {
         {this.state.quotes.map(info => {
           return (
             <View>
-              <Text style={styles.welcome}>Message: {info.quote}</Text>
-              <Text>User: {info.name}</Text>
+              <Text style={styles.welcome}>
+                {info.name}: {info.quote}
+              </Text>
               <Text>
-                Time: {info.date}
-                {"\n"}
+                {info.date} AM
               </Text>
 
             </View>
@@ -124,11 +128,11 @@ export default class Home extends React.Component {
         {this.state.quotes_kavya.map(info => {
           return (
             <View>
-              <Text style={styles.welcome}>Message: {info.quote}</Text>
-              <Text>User: {info.name}</Text>
+              <Text style={styles.welcome}>
+                {info.name}: {info.quote}
+              </Text>
               <Text>
-                Time: {info.date}
-                {"\n"}
+                {info.date} AM
               </Text>
 
             </View>
