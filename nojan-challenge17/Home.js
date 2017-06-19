@@ -116,6 +116,7 @@ export default class Home extends React.Component {
               <Text>
                 Time: {info.date}
                 {"\n"}
+
               </Text>
 
             </View>
